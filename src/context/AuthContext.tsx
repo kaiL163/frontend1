@@ -17,6 +17,7 @@ interface AuthContextType {
     user: User | null;
     token: string | null;
     isAuthenticated: boolean;
+    isInitializing: boolean;
     login: (token: string) => void;
     logout: () => void;
     checkSession: () => Promise<void>;
@@ -26,6 +27,7 @@ const AuthContext = createContext<AuthContextType>({
     user: null,
     token: null,
     isAuthenticated: false,
+    isInitializing: true,
     login: () => { },
     logout: () => { },
     checkSession: async () => { },
@@ -34,6 +36,7 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [isInitializing, setIsInitializing] = useState(true);
     const router = useRouter();
 
     const fetchUser = async (authToken: string) => {
@@ -70,7 +73,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     useEffect(() => {
-        checkSession();
+        const init = async () => {
+            await checkSession();
+            setIsInitializing(false);
+        };
+        init();
     }, []);
 
     const login = (newToken: string) => {
@@ -88,7 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, isAuthenticated: !!user, login, logout, checkSession }}>
+        <AuthContext.Provider value={{ user, token, isAuthenticated: !!user, isInitializing, login, logout, checkSession }}>
             {children}
         </AuthContext.Provider>
     );

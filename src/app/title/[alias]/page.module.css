@@ -216,10 +216,54 @@
 @media (max-width: 900px) {
     .infoSection {
         flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        text-align: center;
     }
 
     .posterWrapper {
-        width: 200px;
+        width: 220px;
         margin: 0 auto;
+    }
+
+    .details {
+        align-items: center;
+    }
+
+    .meta,
+    .badges,
+    .genres,
+    .actions {
+        justify-content: center;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .description {
+        max-width: 100%;
+        -webkit-line-clamp: 8;
+        line-clamp: 8;
+    }
+}
+
+@media (max-width: 600px) {
+    .content {
+        padding: 1rem 5%;
+        gap: 2.5rem;
+    }
+
+    .posterWrapper {
+        width: 180px;
+    }
+
+    .title {
+        font-size: 1.75rem;
+    }
+
+    .watchBtn {
+        width: 100%;
+        justify-content: center;
     }
 }

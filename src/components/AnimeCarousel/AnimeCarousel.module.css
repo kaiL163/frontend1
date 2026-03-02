@@ -118,6 +118,15 @@
 @media (max-width: 500px) {
     .card {
         flex: 0 0 calc((100% - 1.5rem) / 2);
+        min-width: 140px;
+    }
+
+    .carouselSection {
+        padding: 0 5%;
+    }
+
+    .title {
+        font-size: 1.5rem;
     }
 }
 

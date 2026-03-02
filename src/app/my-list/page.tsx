@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
+import AnimeImage from '@/components/AnimeImage/AnimeImage';
 import styles from './my-list.module.css';
 
 const BACKEND_URL = 'http://212.119.42.49:8000';
@@ -18,7 +19,7 @@ interface UserListItem {
 }
 
 export default function MyListPage() {
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated, isInitializing, user } = useAuth();
     const router = useRouter();
 
     const [activeTab, setActiveTab] = useState('all');
@@ -37,12 +38,13 @@ export default function MyListPage() {
     ];
 
     useEffect(() => {
+        if (isInitializing) return;
         if (!isAuthenticated) {
             router.push('/login');
             return;
         }
         fetchUserList();
-    }, [isAuthenticated, router]);
+    }, [isAuthenticated, isInitializing, router]);
 
     const fetchUserList = async () => {
         setIsLoading(true);
@@ -104,7 +106,7 @@ export default function MyListPage() {
                     dataMap[anime.id] = {
                         id: anime.id,
                         title: anime.russian || anime.name,
-                        image: anime.poster?.originalUrl ? `https://shikimori.one${anime.poster.originalUrl}` : null,
+                        image: anime.poster?.originalUrl || null,
                         score: anime.score,
                         year: anime.airedOn?.year,
                         episodes: anime.episodes,
@@ -120,7 +122,7 @@ export default function MyListPage() {
         }
     };
 
-    if (isLoading) return <div className={styles.loading}>Загрузка списка...</div>;
+    if (isInitializing || isLoading) return <div className={styles.loading}>Загрузка списка...</div>;
 
     let filteredList = listItems;
     if (activeTab === 'favorites') {
@@ -171,20 +173,13 @@ export default function MyListPage() {
                             <div key={item.shikimori_id} className={styles.cardWrapper}>
                                 <Link href={`/title/${anime.id}`} className={styles.card}>
                                     <div className={styles.cardImage}>
-                                        {anime.image ? (
-                                            <img
-                                                src={anime.image}
-                                                alt={anime.title}
-                                                className={styles.cardImg}
-                                                loading="lazy"
-                                                referrerPolicy="no-referrer"
-                                                onError={(e) => {
-                                                    e.currentTarget.style.display = 'none';
-                                                }}
-                                            />
-                                        ) : (
-                                            <div className={styles.cardImgPlaceholder} />
-                                        )}
+                                        <AnimeImage
+                                            previewSrc={anime.image}
+                                            originalSrc={anime.image}
+                                            alt={anime.title}
+                                            className={styles.cardImg}
+                                            placeholderClassName={styles.cardImgPlaceholder}
+                                        />
                                         {anime.status === 'ongoing' && (
                                             <span className={styles.ongoingBadge}>Онгоинг</span>
                                         )}

@@ -8,7 +8,7 @@ import styles from './profile.module.css';
 const BACKEND_URL = 'http://212.119.42.49:8000';
 
 export default function ProfilePage() {
-    const { user, isAuthenticated, login } = useAuth();
+    const { user, isAuthenticated, isInitializing, login } = useAuth();
     const router = useRouter();
 
     const [activeTab, setActiveTab] = useState('general');
@@ -23,13 +23,14 @@ export default function ProfilePage() {
     const [isUploading, setIsUploading] = useState(false);
 
     useEffect(() => {
+        if (isInitializing) return;
         if (!isAuthenticated) {
             router.push('/login');
         } else if (user) {
             setUsernameInput(user.username);
             setEmailInput(user.email);
         }
-    }, [isAuthenticated, user, router]);
+    }, [isAuthenticated, isInitializing, user, router]);
 
     const showMessage = (text: string, type: 'error' | 'success') => {
         setMsg({ text, type });

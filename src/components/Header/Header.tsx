@@ -12,6 +12,7 @@ export default function Header() {
     const router = useRouter();
     const { user, isAuthenticated, logout } = useAuth();
     const [isRandomLoading, setIsRandomLoading] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleRandomClick = async () => {
         if (isRandomLoading) return;
@@ -37,17 +38,21 @@ export default function Header() {
                 Neko<span>Stream</span>
             </Link>
 
-            <nav className={styles.nav}>
-                <Link href="/" className={styles.navLink}>Главная</Link>
-                <Link href="/search" className={styles.navLink}>Каталог</Link>
-                <Link href="/search?status=IS_ONGOING" className={styles.navLink}>Онгоинги</Link>
+            <nav className={`${styles.nav} ${isMenuOpen ? styles.navActive : ''}`}>
+                <Link href="/" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>Главная</Link>
+                <Link href="/search" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>Каталог</Link>
+                <Link href="/search?status=IS_ONGOING" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>Онгоинги</Link>
                 <button
-                    onClick={handleRandomClick}
+                    onClick={() => {
+                        handleRandomClick();
+                        setIsMenuOpen(false);
+                    }}
                     className={`${styles.navLink} ${styles.randomBtn}`}
                     disabled={isRandomLoading}
                 >
                     {isRandomLoading ? 'Загрузка...' : 'Случайное'}
                 </button>
+                {/* Mobile actions copied here for easier layout if needed, or just keep them in actions */}
             </nav>
 
             <div className={styles.actions}>
@@ -65,21 +70,31 @@ export default function Header() {
                     <div className={styles.userMenuWrapper}>
                         <span className={styles.username}>{user.username}</span>
                         <div className={styles.dropdownMenu}>
-                            <button className={styles.dropdownItem} onClick={() => router.push('/profile')}>
+                            <button className={styles.dropdownItem} onClick={() => { router.push('/profile'); setIsMenuOpen(false); }}>
                                 Профиль
                             </button>
-                            <button className={styles.dropdownItem} onClick={() => router.push('/my-list')}>
+                            <button className={styles.dropdownItem} onClick={() => { router.push('/my-list'); setIsMenuOpen(false); }}>
                                 Мой список
                             </button>
                             <div className={styles.dropdownDivider}></div>
-                            <button className={`${styles.dropdownItem} ${styles.logoutText}`} onClick={logout}>
+                            <button className={`${styles.dropdownItem} ${styles.logoutText}`} onClick={() => { logout(); setIsMenuOpen(false); }}>
                                 Выход
                             </button>
                         </div>
                     </div>
                 ) : (
-                    <button className={styles.loginBtn} onClick={() => router.push('/login')}>Войти</button>
+                    <button className={styles.loginBtn} onClick={() => { router.push('/login'); setIsMenuOpen(false); }}>Войти</button>
                 )}
+
+                <button
+                    className={styles.hamburger}
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label="Меню"
+                >
+                    <div className={`${styles.bar} ${isMenuOpen ? styles.bar1 : ''}`}></div>
+                    <div className={`${styles.bar} ${isMenuOpen ? styles.bar2 : ''}`}></div>
+                    <div className={`${styles.bar} ${isMenuOpen ? styles.bar3 : ''}`}></div>
+                </button>
             </div>
         </header>
     );
