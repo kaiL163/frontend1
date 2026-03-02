@@ -3,7 +3,7 @@
  * All anime data comes from the backend Kodik proxy.
  */
 
-export const BACKEND_URL = 'http://212.119.42.49:8000';
+export const BACKEND_URL = 'https://api.nekostream.ru';
 
 export interface KodikCard {
     id: string;

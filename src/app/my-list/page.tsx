@@ -7,7 +7,7 @@ import Link from 'next/link';
 import AnimeImage from '@/components/AnimeImage/AnimeImage';
 import styles from './my-list.module.css';
 
-const BACKEND_URL = 'http://212.119.42.49:8000';
+const BACKEND_URL = 'https://api.nekostream.ru';
 
 interface UserListItem {
     id: number;

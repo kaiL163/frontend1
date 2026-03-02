@@ -38,7 +38,7 @@ export default function SearchOverlay({ onClose }: SearchOverlayProps) {
         const timer = setTimeout(async () => {
             setLoading(true);
             try {
-                const res = await fetch(`http://212.119.42.49:8000/shikimori/catalog`, {
+                const res = await fetch(`https://api.nekostream.ru/shikimori/catalog`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ search: query, limit: 8 })

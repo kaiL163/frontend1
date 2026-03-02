@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
-const KODIK_API = 'http://212.119.42.49:8000/shikimori/catalog';
+const KODIK_API = 'https://api.nekostream.ru/shikimori/catalog';
 
 // ── Filter options ────────────────────────────────────────────
 const SORT_OPTIONS = [

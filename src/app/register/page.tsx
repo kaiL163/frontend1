@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import styles from '../login/login.module.css';
 
-const BACKEND_URL = 'http://212.119.42.49:8000';
+const BACKEND_URL = 'https://api.nekostream.ru';
 
 export default function RegisterPage() {
     const [credentials, setCredentials] = useState({ username: '', email: '', password: '' });

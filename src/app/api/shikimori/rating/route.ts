@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const BACKEND = 'http://212.119.42.49:8000';
+const BACKEND_URL = 'https://api.nekostream.ru';
 
 // GET /api/shikimori/rating?title=Название
 // Возвращает рейтинг аниме из Shikimori через наш Python бэкенд
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
 
     try {
         const res = await fetch(
-            `${BACKEND}/shikimori/search?title=${encodeURIComponent(title)}`,
+            `${BACKEND_URL}/shikimori/search?title=${encodeURIComponent(title)}`,
             { next: { revalidate: 86400 } } // Кешируем на сутки
         );
 

@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-const BACKEND_URL = 'http://212.119.42.49:8000';
+const BACKEND_URL = 'https://api.nekostream.ru';
 
 interface User {
     id: number;
